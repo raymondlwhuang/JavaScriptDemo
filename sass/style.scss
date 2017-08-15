@@ -1,0 +1,147 @@
+/*
+Author: Raymond Huang
+Last Update:July 2017
+*/
+
+	$maxWidth: 991px;
+	$minWidth: 320px;
+	$breakPoint-sm: 479px;
+	$breakPoint-md: 767px;
+	$breakPoint-lg: $maxWidth;
+	$breakPoint-xl: 1299px;
+	/* css reset */
+	html, body, div, span, applet, object, iframe,
+	h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+	a, abbr, acronym, address, big, cite, code,
+	del, dfn, em, img, ins, kbd, q, s, samp,
+	small, strike, strong, sub, sup, tt, var,
+	b, u, i, center,
+	dl, dt, dd, ol, ul, li,
+	fieldset, form, label, legend,
+	table, caption, tbody, tfoot, thead, tr, th, td,
+	article, aside, canvas, details, embed,
+	figure, figcaption, footer, header, hgroup,
+	menu, nav, output, ruby, section, summary,
+	time, mark, audio, video {
+		margin: 0;
+		padding: 0;
+		border: 0;
+		font-size: 100%;
+		font: inherit;
+		vertical-align: baseline;
+		box-sizing:border-box;
+	}
+	/* HTML5 display-role reset for older browsers */
+	article, aside, details, figcaption, figure,
+	footer, header, hgroup, menu, nav, section {
+		display: block;
+	}
+	input,
+	label,
+	select,
+	button,
+	textarea
+	{
+		margin:0;
+		padding:0;
+		display:inline-block;
+		vertical-align:middle;
+		white-space:normal;
+		background:none;
+		line-height:1;
+		box-sizing:border-box;
+	}
+
+	body {
+		line-height: 1;
+	}
+
+	ol, ul {
+		list-style: none;
+	}
+
+	blockquote, q {
+		quotes: none;
+	}
+
+	blockquote:before, blockquote:after,
+	q:before, q:after {
+		content: '';
+		content: none;
+	}
+
+	table {
+		border-collapse: collapse;
+		border-spacing: 0;
+	}
+
+	body {
+		min-width: $minWidth;
+	}
+	img {
+		max-width:100%;
+	}
+	a {
+		cursor:pointer;
+	}
+	iframe {
+		max-width: 100%;
+	}
+@media all {
+	@import "_miscellaneous";
+	@import "_fonts";
+	@import "_color";
+	@import "_border";
+	@import "_shadow";
+	@import "_columns";
+	@import "_width";
+	@import "_float";
+	@import "_position";
+	@import "_display";
+	@import "_text_handling";
+	@import "_margin_padding";
+	@import "_special";
+}
+@media all and (min-width: $breakPoint-sm) {
+	@import "_miscellaneous-sm";
+	@import "_fonts-sm";
+	@import "_color-sm";
+	@import "_border-sm";
+	@import "_shadow-sm";
+	@import "_columns-sm";
+	@import "_width-sm";
+	@import "_float-sm";
+	@import "_position-sm";
+	@import "_display-sm";
+	@import "_text_handling-sm";
+	@import "_margin_padding-sm";
+}
+@media all and (min-width: $breakPoint-md) {
+	@import "_miscellaneous-md";
+	@import "_fonts-md";
+	@import "_color-md";
+	@import "_border-md";
+	@import "_shadow-md";
+	@import "_columns-md";
+	@import "_width-md";
+	@import "_float-md";
+	@import "_position-md";
+	@import "_display-md";
+	@import "_text_handling-md";
+	@import "_margin_padding-md";
+}
+
+@media all and (min-width: $breakPoint-lg) {
+	@import "_miscellaneous-lg";
+	@import "_fonts-lg";
+	@import "_color-lg";
+	@import "_border-lg";
+	@import "_shadow-lg";
+	@import "_columns-lg";
+	@import "_width-lg";
+	@import "_float-lg";
+	@import "_position-lg";
+	@import "_display-lg";
+	@import "_text_handling-lg";
+	@import "_margin_padding-lg";
+}

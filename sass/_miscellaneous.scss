@@ -1,0 +1,30 @@
+.pair_input {
+	float:left;
+	width: 60%;
+	padding: 5px;
+	border-radius: 2px;
+	margin-bottom:10px;
+}
+.pair_list {
+	padding: 5px;
+    border-radius: 2px;
+    width: calc(40% - 10px);
+    float: right;
+    margin: 0 5px;
+	margin-bottom:10px;
+}
+.overflow-hidden {
+	overflow:hidden;
+}
+.no-required-widget {
+	display: none;
+	margin-top: 20px;
+	border: double #CCC;
+	padding-left: 20px;
+	padding-right: 20px;
+	overflow:hidden;
+}
+.Disclaimer {
+	float:right;
+	margin-bottom:10px;
+}
