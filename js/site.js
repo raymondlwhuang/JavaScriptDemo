@@ -1,35 +1,108 @@
-var MyDemo = MyDemo || {};
-MyDemo.common = function(e) {
-    "use strict";
-	function getRate(indicator) {
-		var base_list = document.getElementById('base_list'+indicator);
-		var target_list = document.getElementById('target_list'+indicator);
-		var base=base_list.options[base_list.selectedIndex].text;
-		var target = target_list.options[target_list.selectedIndex].text;
-		if(base!=target) {
-			  var xhttp = new XMLHttpRequest();
-			  xhttp.onreadystatechange = function() {
-				if (this.readyState == 4 && this.status == 200) {
-				  var obj = JSON.parse(this.responseText);
-					for (var key in obj) {
-					  if (obj.hasOwnProperty(key) && key=='rates') {
+function myDemo (widgetsRequiredID,widgetContainerId,widgetsClass){
+	this.widgetsRequired = document.getElementById(widgetsRequiredID);
+	this.widgetContainer = document.getElementById(widgetContainerId);
+	this.widgets = document.getElementsByClassName(widgetsClass);
+	this.count = 0;
+	this.widgetsRequired.focus();
 
-						  alert('Currency exchange rate is : '+ obj[key][target]);
-					  }
-					}		  
-
-				}
-			  };
-			  xhttp.open("GET", "http://api.fixer.io/latest?base="+base+"&symbols="+target, true);
-			  xhttp.send();				
-		}
+}
+myDemo.prototype.removeEl = function(){
+	if(this.widgets.length > 0){
+		for(let i =0;i< this.widgets.length; i++){
+			this.widgetContainer.removeChild(this.widgetContainer.childNodes[0]);
+		}		
 	}
-	function getResult(indicator) {
-		var base_list = document.getElementById('base_list'+indicator),
-		target_list = document.getElementById('target_list'+indicator);
-	  var base=base_list.options[base_list.selectedIndex].text;
-	  var target = target_list.options[target_list.selectedIndex].text;
-	  if(base!=target) {
+
+}
+myDemo.prototype.createContainer = function(numberOfWdiget){
+	this.numberOfWdiget = numberOfWdiget;
+	for(let i=0;i<this.numberOfWdiget;i++) {
+		let thisElement = document.createElement("div");
+			thisElement.className = "required-widget cols-2-sm cols-3-md";
+			this.widgetContainer.appendChild(thisElement); 
+	}
+}
+myDemo.prototype.createWidget = function(myContainer,index){
+	let option;
+	let array = ["EUR","USD","HKD"];
+	let thisElement = document.createElement("h2");
+	let t = document.createTextNode("Currency converter");
+	
+		thisElement.appendChild(t);
+		thisElement.className = "mtb-10";
+		myContainer.appendChild(thisElement); 
+		thisElement = document.createElement("h3");
+		t = document.createTextNode("Type in amount and select currency");
+		thisElement.appendChild(t);
+		thisElement.className = "mb-10";
+		myContainer.appendChild(thisElement); 
+		thisElement = document.createElement("input");
+		thisElement.type="text";
+		thisElement.value= "";
+		thisElement.id="pair_base_input"+index;
+		thisElement.setAttribute("placeholder", "0.00");
+		thisElement.className = "pair_input";
+		myContainer.appendChild(thisElement);
+
+
+		//Create and append select list
+		thisElement = document.createElement("select");
+		thisElement.id ="base_list"+index;
+		thisElement.className = "pair_list";
+
+		//Create and append the options
+		for (let j = 0; j < array.length; j++) {
+			option = document.createElement("option");
+			option.value = array[j];
+			option.text = array[j];
+			thisElement.appendChild(option);
+		}
+		myContainer.appendChild(thisElement);
+
+		thisElement = document.createElement("input");
+		thisElement.type="text";
+		thisElement.value= "";
+		thisElement.id="pair_targ_input"+index;
+		thisElement.setAttribute("placeholder", "0.00");
+		thisElement.className = "pair_input";
+		myContainer.appendChild(thisElement);
+
+
+		//Create and append select list
+		thisElement = document.createElement("select");
+		thisElement.id ="target_list"+index;
+		thisElement.className = "pair_list";
+
+		//Create and append the options
+		for (let k = 0; k < array.length; k++) {
+			option = document.createElement("option");
+			option.value = array[k];
+			option.text = array[k];
+			if(k==1) {
+				option.setAttribute("selected", 1)
+			}
+			thisElement.appendChild(option);
+		}
+		myContainer.appendChild(thisElement);
+		thisElement = document.createElement("a");
+		thisElement.className = "Disclaimer";
+		thisElement.id = "Disclaimer"+index;
+		t = document.createTextNode("Disclaimer");
+		thisElement.appendChild(t);
+		myContainer.appendChild(thisElement);
+		
+}
+
+myDemo.prototype.validate =	function (s) {
+	var rgx = /^[0-9]*\.?[0-9]*$/;
+	return s ? s.match(rgx) : null;
+}
+myDemo.prototype.getRate = function(indicator) {
+	var base_list = document.getElementById('base_list'+indicator);
+	var target_list = document.getElementById('target_list'+indicator);
+	var base=base_list.options[base_list.selectedIndex].text;
+	var target = target_list.options[target_list.selectedIndex].text;
+	if(base!=target) {
 		  var xhttp = new XMLHttpRequest();
 		  xhttp.onreadystatechange = function() {
 			if (this.readyState == 4 && this.status == 200) {
@@ -37,139 +110,86 @@ MyDemo.common = function(e) {
 				for (var key in obj) {
 				  if (obj.hasOwnProperty(key) && key=='rates') {
 
-					  document.getElementById("pair_targ_input"+indicator).value = (document.getElementById("pair_base_input"+indicator).value * obj[key][target]).toFixed(2);
+					  alert('Demo currency exchange rate is : '+ obj[key][target]);
 				  }
 				}		  
 
 			}
 		  };
-		  xhttp.open("GET", "http://api.fixer.io/latest?base="+base+"&symbols="+target, true);
-		  xhttp.send();		  
-	  }
-	  else {
-		document.getElementById("pair_targ_input"+indicator).value = document.getElementById("pair_base_input"+indicator).value;
-	  }
+		  xhttp.open("GET", "http://data.fixer.io/api/latest?access_key=2b81c7684c1d1d43f49d4561e04c3a76&base="+base+"&symbols="+target, true);
+		  xhttp.send();				
 	}
-	function validate(s) {
-		var rgx = /^[0-9]*\.?[0-9]*$/;
-		return s.match(rgx);
-	}	
-	var widgets = document.getElementsByClassName("required-widget");
-	var myContainer;
-	for(var i = 0; i < widgets.length; i++)
+}
+
+myDemo.prototype.getResult = function(indicator) {
+	var base_list = document.getElementById('base_list'+indicator),
+	target_list = document.getElementById('target_list'+indicator);
+  var base=base_list.options[base_list.selectedIndex].text;
+  var target = target_list.options[target_list.selectedIndex].text;
+  if(base!=target) {
+	  var xhttp = new XMLHttpRequest();
+	  xhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+		  var obj = JSON.parse(this.responseText);
+			for (var key in obj) {
+			  if (obj.hasOwnProperty(key) && key=='rates') {
+
+				  document.getElementById("pair_targ_input"+indicator).value = (document.getElementById("pair_base_input"+indicator).value * obj[key][target]).toFixed(2);
+			  }
+			}		  
+
+		}
+	  };
+	  xhttp.open("GET", "http://data.fixer.io/api/latest?access_key=2b81c7684c1d1d43f49d4561e04c3a76");
+	  xhttp.send();		  
+  }
+  else {
+	document.getElementById("pair_targ_input"+indicator).value = document.getElementById("pair_base_input"+indicator).value;
+  }
+}
+
+myDemo.prototype.addListener = function  (){
+	let required = document.querySelectorAll('*[id^="pair_base_input"]');
+	for(let i = 0; i < required.length; i++)
 	{
-		myContainer = widgets.item(i);	
-		createWidget(myContainer);
-	}
-	function createWidget(myContainer) {
-		var myContainer;
-		var option;
-		var array = ["CAD","USD","EUR"];
-		var thisElement = document.createElement("h2");
-		var t = document.createTextNode("Currency converter");
-		
-			thisElement.appendChild(t);
-			thisElement.className = "mtb-10";
-			myContainer.appendChild(thisElement); 
-			thisElement = document.createElement("h3");
-			t = document.createTextNode("Type in amount and select currency");
-			thisElement.appendChild(t);
-			thisElement.className = "mb-10";
-			myContainer.appendChild(thisElement); 
-			thisElement = document.createElement("input");
-			thisElement.type="text";
-			thisElement.value= "";
-			thisElement.id="pair_base_input"+i;
-			thisElement.setAttribute("placeholder", "0.00");
-			thisElement.className = "pair_input";
-			myContainer.appendChild(thisElement);
-
-
-			//Create and append select list
-			thisElement = document.createElement("select");
-			thisElement.id ="base_list"+i;
-			thisElement.className = "pair_list";
-
-			//Create and append the options
-			for (var j = 0; j < array.length; j++) {
-				option = document.createElement("option");
-				option.value = array[j];
-				option.text = array[j];
-				thisElement.appendChild(option);
-			}
-			myContainer.appendChild(thisElement);
-
-			thisElement = document.createElement("input");
-			thisElement.type="text";
-			thisElement.value= "";
-			thisElement.id="pair_targ_input"+i;
-			thisElement.setAttribute("placeholder", "0.00");
-			thisElement.className = "pair_input";
-			myContainer.appendChild(thisElement);
-
-
-			//Create and append select list
-			thisElement = document.createElement("select");
-			thisElement.id ="target_list"+i;
-			thisElement.className = "pair_list";
-
-			//Create and append the options
-			for (var k = 0; k < array.length; k++) {
-				option = document.createElement("option");
-				option.value = array[k];
-				option.text = array[k];
-				if(k==1) {
-					option.setAttribute("selected", 1)
-				}
-				thisElement.appendChild(option);
-			}
-			myContainer.appendChild(thisElement);
-			thisElement = document.createElement("a");
-			thisElement.className = "Disclaimer";
-			thisElement.id = "Disclaimer"+i;
-			t = document.createTextNode("Disclaimer");
-			thisElement.appendChild(t);
-			myContainer.appendChild(thisElement);
-			
-	}	
-	var required = document.querySelectorAll('*[id^="pair_base_input"]');
-	for(var i = 0; i < required.length; i++)
-	{
-		var input = document.getElementById("pair_base_input"+i);
-		var base_list = document.getElementById("base_list"+i);
-		var target_list = document.getElementById("target_list"+i);
-		var Disclaimer = document.getElementById("Disclaimer"+i);
-		
-	   input.addEventListener('blur', (function(i, input) {
-		 return function() {
-		   getResult(i);
-		 }
-	   })(i, input));
-	   input.addEventListener('keyup', (function(e) {
-			if (!validate(this.value)) {
+		let input = document.getElementById("pair_base_input"+i);
+		let base_list = document.getElementById("base_list"+i);
+		let target_list = document.getElementById("target_list"+i);
+		let Disclaimer = document.getElementById("Disclaimer"+i);
+	   input.addEventListener('blur', ()=>this.getResult(i));
+	   input.addEventListener('keyup', () =>{
+			if (!this.validate(this.value)) {
 				this.value = '';
 				return false;
 			}
-	}));	   
-	   base_list.addEventListener('change', (function(i, base_list) {
-		 return function() {
-		   getResult(i);
-		 }
-	   })(i, base_list)); 
-	   Disclaimer.addEventListener('click', (function(i, Disclaimer) {
-		 return function() {
-		   getRate(i);
-		 }
-	   })(i, Disclaimer)); 	   
-	   target_list.addEventListener('change', (function(i, target_list) {
-		 return function() {
-		   getResult(i);
-		 }
-	   })(i, target_list));    
+	   });	   
+	   base_list.addEventListener('change', ()=> this.getResult(i)); 
+	   Disclaimer.addEventListener('click', ()=>this.getRate(i));	   
+	   target_list.addEventListener('change', ()=>  this.getResult(i));    
 
 	}
+}	
 
-}();
 
+myDemo.prototype.doCreate = function(){
+	for(let i = 0; i < this.count; i++)
+	{
+		this.createWidget(this.widgets.item(i),i);
+	}
 
+}
+myDemo.prototype.create = function(){
+	this.widgetsRequired.addEventListener('blur', () => {
+		while  (this.widgets.length >0){
+			this.removeEl();
+		};
+		this.count = this.widgetsRequired.value;
+		this.createContainer(this.count);
+		this.doCreate();
+		this.addListener();
+
+	});
+}
+const test = new myDemo('widget-needed','widget-container','required-widget');
+test.create();
 
