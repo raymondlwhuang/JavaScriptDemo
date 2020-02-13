@@ -190,6 +190,6 @@ myDemo.prototype.create = function(){
 
 	});
 }
-const test = new myDemo('widget-needed','widget-container','required-widget');
-test.create();
+const myDemo1 = new myDemo('widget-needed','widget-container','required-widget');
+myDemo1.create();
 
