@@ -4,7 +4,6 @@ function myDemo (widgetsRequiredID,widgetContainerId,widgetsClass){
 	this.widgets = document.getElementsByClassName(widgetsClass);
 	this.count = 0;
 	this.widgetsRequired.focus();
-
 }
 myDemo.prototype.removeEl = function(){
 	if(this.widgets.length > 0){
@@ -15,8 +14,7 @@ myDemo.prototype.removeEl = function(){
 
 }
 myDemo.prototype.createContainer = function(numberOfWdiget){
-	this.numberOfWdiget = numberOfWdiget;
-	for(let i=0;i<this.numberOfWdiget;i++) {
+	for(let i=0;i< numberOfWdiget; i++) {
 		let thisElement = document.createElement("div");
 			thisElement.className = "required-widget cols-2-sm cols-3-md";
 			this.widgetContainer.appendChild(thisElement); 
@@ -94,20 +92,20 @@ myDemo.prototype.createWidget = function(myContainer,index){
 }
 
 myDemo.prototype.validate =	function (s) {
-	var rgx = /^[0-9]*\.?[0-9]*$/;
+	let rgx = /^[0-9]*\.?[0-9]*$/;
 	return s ? s.match(rgx) : null;
 }
 myDemo.prototype.getRate = function(indicator) {
-	var base_list = document.getElementById('base_list'+indicator);
-	var target_list = document.getElementById('target_list'+indicator);
-	var base=base_list.options[base_list.selectedIndex].text;
-	var target = target_list.options[target_list.selectedIndex].text;
+	let base_list = document.getElementById('base_list'+indicator);
+	let target_list = document.getElementById('target_list'+indicator);
+	let base=base_list.options[base_list.selectedIndex].text;
+	let target = target_list.options[target_list.selectedIndex].text;
 	if(base!=target) {
-		  var xhttp = new XMLHttpRequest();
+		  let xhttp = new XMLHttpRequest();
 		  xhttp.onreadystatechange = function() {
 			if (this.readyState == 4 && this.status == 200) {
-			  var obj = JSON.parse(this.responseText);
-				for (var key in obj) {
+			  let obj = JSON.parse(this.responseText);
+				for (let key in obj) {
 				  if (obj.hasOwnProperty(key) && key=='rates') {
 
 					  alert('Demo currency exchange rate is : '+ obj[key][target]);
@@ -122,16 +120,16 @@ myDemo.prototype.getRate = function(indicator) {
 }
 
 myDemo.prototype.getResult = function(indicator) {
-	var base_list = document.getElementById('base_list'+indicator),
-	target_list = document.getElementById('target_list'+indicator);
-  var base=base_list.options[base_list.selectedIndex].text;
-  var target = target_list.options[target_list.selectedIndex].text;
+  let base_list = document.getElementById('base_list'+indicator);
+  let target_list = document.getElementById('target_list'+indicator);
+  let base=base_list.options[base_list.selectedIndex].text;
+  let target = target_list.options[target_list.selectedIndex].text;
   if(base!=target) {
-	  var xhttp = new XMLHttpRequest();
+	  let xhttp = new XMLHttpRequest();
 	  xhttp.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
-		  var obj = JSON.parse(this.responseText);
-			for (var key in obj) {
+		  let obj = JSON.parse(this.responseText);
+			for (let key in obj) {
 			  if (obj.hasOwnProperty(key) && key=='rates') {
 
 				  document.getElementById("pair_targ_input"+indicator).value = (document.getElementById("pair_base_input"+indicator).value * obj[key][target]).toFixed(2);
@@ -150,8 +148,7 @@ myDemo.prototype.getResult = function(indicator) {
 
 myDemo.prototype.addListener = function  (){
 	let required = document.querySelectorAll('*[id^="pair_base_input"]');
-	for(let i = 0; i < required.length; i++)
-	{
+	required.forEach((req,i)=>{
 		let input = document.getElementById("pair_base_input"+i);
 		let base_list = document.getElementById("base_list"+i);
 		let target_list = document.getElementById("target_list"+i);
@@ -167,7 +164,8 @@ myDemo.prototype.addListener = function  (){
 	   Disclaimer.addEventListener('click', ()=>this.getRate(i));	   
 	   target_list.addEventListener('change', ()=>  this.getResult(i));    
 
-	}
+	});
+
 }	
 
 
